@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http"); // ✅ Needed for socket.io
 const { Server } = require("socket.io");
+const path = require("path");
 
 dotenv.config();
 connectDB();
@@ -11,6 +12,9 @@ connectDB();
 const app = express();
 app.use(cors());
 app.use(express.json()); // Parse incoming JSON
+app.use("/uploads", express.static("uploads"));
+
+
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
@@ -33,10 +37,12 @@ const server = http.createServer(app);
 // ✅ Initialize socket.io
 const io = new Server(server, {
   cors: {
-    origin: "*", // allow frontend on different port
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+
 
 // ✅ Store connected users and handle socket events
 io.on("connection", (socket) => {

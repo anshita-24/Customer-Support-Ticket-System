@@ -1,12 +1,11 @@
-// src/socket.js
 import { io } from "socket.io-client";
 
-console.log("📡 Socket connecting..."); // 👈 add this
+console.log("📡 Socket connecting...");
 
 const socket = io("http://localhost:5050", {
-  transports: ["websocket"],
   reconnectionAttempts: 5,
   timeout: 2000,
+  // ⚠️ Do not force transports here — allow fallback to polling
 });
 
 socket.on("connect", () => {

@@ -1,3 +1,4 @@
+import TestChat from "./pages/TestChat"; // ✅ Add this line
 import { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
@@ -19,9 +20,7 @@ function App() {
       console.log("❌ Disconnected from socket");
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    
   }, []);
 
   return (
@@ -37,6 +36,7 @@ function App() {
         <Route path="/customer" element={<DashboardCustomer />} />
         <Route path="/agent" element={<DashboardAgent />} />
         <Route path="/admin" element={<DashboardAdmin />} />
+        <Route path="/test-chat" element={<TestChat />} />
       </Routes>
     </div>
   );

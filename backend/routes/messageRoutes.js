@@ -3,30 +3,33 @@ const router = express.Router();
 const Message = require("../models/Message");
 const { protect } = require("../middleware/authMiddleware");
 
-// POST: Send a message
-router.post("/", protect, async (req, res) => {
+// Get messages for a ticket
+router.get("/:ticketId", protect, async (req, res) => {
   try {
-    const { ticketId, message } = req.body;
-    const newMessage = await Message.create({
+    const messages = await Message.find({ ticketId: req.params.ticketId }).populate("sender", "name role");
+    res.json(messages);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting messages" });
+  }
+});
+
+// Save new message
+router.post("/", protect, async (req, res) => {
+  const { ticketId, message } = req.body;
+
+  try {
+    const newMessage = new Message({
       ticketId,
       sender: req.user._id,
       message,
     });
-    res.status(201).json(newMessage);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to send message" });
-  }
-});
 
-// GET: Get all messages for a ticket
-router.get("/:ticketId", protect, async (req, res) => {
-  try {
-    const messages = await Message.find({ ticketId: req.params.ticketId }).populate("sender", "name email");
-    res.json(messages);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to fetch messages" });
+    const saved = await newMessage.save();
+    const populated = await saved.populate("sender", "name role");
+
+    res.status(201).json(populated);
+  } catch (error) {
+    res.status(500).json({ message: "Error saving message" });
   }
 });
 

@@ -10,24 +10,7 @@ function DashboardAdmin() {
 
   useEffect(() => {
     fetchTickets();
-
-    // ✅ Hardcoded agents to continue working
-    const dummyAgents = [
-      {
-        _id: "664b27f8a3f5bb2578888a01",
-        name: "Agent A",
-        email: "agent1@example.com",
-      },
-      {
-        _id: "664b27f8a3f5bb2578888a02",
-        name: "Agent B",
-        email: "agent2@example.com",
-      },
-    ];
-    setAgents(dummyAgents);
-
-    // ❌ Temporarily skip API call causing issue
-    // fetchAgents();
+    fetchAgents();
   }, []);
 
   const fetchTickets = async () => {
@@ -41,17 +24,16 @@ function DashboardAdmin() {
     }
   };
 
-  // 🔒 Skipping this call for now
-  // const fetchAgents = async () => {
-  //   try {
-  //     const res = await axios.get("http://localhost:5000/api/users/agents", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     setAgents(res.data);
-  //   } catch (err) {
-  //     console.error("Failed to fetch agents", err);
-  //   }
-  // };
+  const fetchAgents = async () => {
+    try {
+      const res = await axios.get("http://localhost:5050/api/users/agents", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAgents(res.data);
+    } catch (err) {
+      console.error("Failed to fetch agents", err);
+    }
+  };
 
   const handleAssign = async (ticketId) => {
     const agentId = assignments[ticketId];
@@ -59,7 +41,7 @@ function DashboardAdmin() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/tickets/assign",
+        "http://localhost:5050/api/tickets/assign",
         { ticketId, agentId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -76,8 +58,12 @@ function DashboardAdmin() {
       <h2>Admin Dashboard - All Tickets</h2>
       <ul>
         {tickets.map((ticket) => (
-          <li key={ticket._id}>
-            <strong>{ticket.subject}</strong> - {ticket.status}
+          <li key={ticket._id} style={{ marginBottom: "2rem" }}>
+            <strong>{ticket.subject}</strong> - {ticket.status} ({ticket.priority})
+            <br />
+            Assigned To: {ticket.assignedTo?.name || "Not Assigned"}
+            <br />
+            ✅ Customer Rating: {ticket.rating ? `${ticket.rating} ⭐` : "Not rated yet"}
             <br />
             <label>Assign to:</label>
             <select
