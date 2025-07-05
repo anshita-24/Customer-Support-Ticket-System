@@ -10,10 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.6.0",
     "axios": "^1.10.0",
+    "framer-motion": "^12.23.0",
+    "lottie-react": "^2.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-parallax-tilt": "^1.7.299",
     "react-router-dom": "^7.6.2",
+    "react-tsparticles": "^2.12.2",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
