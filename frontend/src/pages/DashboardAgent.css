@@ -1,0 +1,128 @@
+/* src/pages/DashboardAgent.css */
+
+.agent-dashboard {
+  padding: 2rem;
+  background-color: #0f111a;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.dashboard-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #f5c219;
+}
+
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+
+.ticket-card {
+  background-color: #1e1f2b;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(245, 194, 25, 0.1);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 220px; /* ✅ Shorter length */
+  overflow: hidden;
+}
+
+.ticket-card:hover {
+  transform: translateY(-4px);
+}
+
+.ticket-subject {
+  font-size: 1.1rem;
+  color: #f5c219;
+  margin-bottom: 0.3rem;
+}
+
+.ticket-message {
+  font-size: 0.88rem;
+  color: #ccc;
+  white-space: nowrap;            /* ✅ Single-line message */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.status-badge,
+.priority-badge {
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-badge.open {
+  background-color: #f5c219;
+  color: black;
+}
+.status-badge.in-progress {
+  background-color: #ffb347;
+  color: black;
+}
+.status-badge.resolved {
+  background-color: #90ee90;
+  color: black;
+}
+.status-badge.closed {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.priority-badge.low {
+  background-color: #2a9d8f;
+}
+.priority-badge.medium {
+  background-color: #f4a261;
+}
+.priority-badge.high {
+  background-color: #e76f51;
+}
+
+.attachment-link {
+  font-size: 0.8rem;
+  color: #f5c219;
+}
+
+.rating-info {
+  font-size: 0.82rem;
+  color: #ccc;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.controls select {
+  padding: 4px 8px;
+  background-color: #2a2e39;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.8rem;
+}
+
+.ChatBox {
+  margin-top: auto;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import socket from "../socket";
 import axios from "axios";
+import "./ChatBox.css"; // Add this import
 
 function ChatBox({ ticketId }) {
   const [messages, setMessages] = useState([]);
@@ -8,10 +9,8 @@ function ChatBox({ ticketId }) {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // Join room for the ticket
     socket.emit("joinRoom", ticketId);
 
-    // Load old messages
     const fetchMessages = async () => {
       try {
         const res = await axios.get(`http://localhost:5050/api/messages/${ticketId}`, {
@@ -25,61 +24,64 @@ function ChatBox({ ticketId }) {
 
     fetchMessages();
 
-    // Listen for real-time messages
-    socket.on("newMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+    const handleIncoming = (msg) => {
+      if (msg.ticketId === ticketId) {
+        setMessages((prev) => [...prev, msg]);
+      }
+    };
+
+    socket.on("newMessage", handleIncoming);
 
     return () => {
-      socket.off("newMessage");
+      socket.emit("leaveRoom", ticketId);
+      socket.off("newMessage", handleIncoming);
     };
-  }, [ticketId]);
+  }, [ticketId, token]);
 
   const handleSend = async () => {
     if (!newMessage.trim()) return;
 
-    const msgData = {
-      ticketId,
-      message: newMessage,
-    };
-
     try {
-      // Send to backend (will also be broadcast via socket)
-      const res = await axios.post("http://localhost:5050/api/messages", msgData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post(
+        "http://localhost:5050/api/messages",
+        { ticketId, message: newMessage },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      socket.emit("sendMessage", {
-        ticketId,
-        message: res.data, // emit the saved message
-      });
+      socket.emit("sendMessage", { ticketId });
 
       setNewMessage("");
     } catch (err) {
-      console.error("Failed to send", err);
+      console.error("Failed to send message", err);
     }
   };
 
   return (
-    <div className="border p-2 mt-2 rounded bg-gray-100">
-      <h4 className="font-semibold">Chat</h4>
-      <div className="max-h-40 overflow-y-auto text-sm mb-2">
-        {messages.map((msg, idx) => (
-          <div key={idx}>
-            <strong>{msg.sender?.name || "You"}:</strong> {msg.message}
-          </div>
-        ))}
+    <div className="chat-box-bubble-style">
+      <h4 className="chat-title">Chat</h4>
+      <div className="chat-messages-bubble">
+        {messages.map((msg, idx) => {
+          const isOwn = msg.sender?.role === "agent" || msg.sender?.name === "You";
+          return (
+            <div key={idx} className={`chat-bubble ${isOwn ? "own" : "other"}`}>
+              <div className="sender-name">{msg.sender?.name || "You"}</div>
+              <div className="bubble-content">{msg.message}</div>
+            </div>
+          );
+        })}
       </div>
-      <div className="flex gap-2">
+
+      <div className="chat-input-area">
         <input
-          className="border p-1 flex-1"
+          type="text"
+          className="chat-input"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
         />
-        <button className="bg-blue-500 text-white px-2 rounded" onClick={handleSend}>
-          Send
-        </button>
+        <button className="send-button" onClick={handleSend}>Send</button>
       </div>
     </div>
   );

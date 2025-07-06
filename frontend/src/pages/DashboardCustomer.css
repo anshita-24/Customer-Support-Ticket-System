@@ -1,0 +1,146 @@
+/* src/pages/DashboardCustomer.css */
+
+/* Scrollable container */
+.dashboard-scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 2rem;
+  scroll-behavior: smooth;
+}
+
+.customer-dashboard-timeline {
+  padding: 2rem 1rem;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0f111a;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.dashboard-heading {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+  color: #f5c219;
+  letter-spacing: 0.5px;
+}
+
+.ticket-form {
+  max-width: 600px;
+  margin: 0 auto 4rem auto;
+  padding: 2rem;
+  background: #1a1c24;
+  border-radius: 10px;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.ticket-form input,
+.ticket-form textarea,
+.ticket-form select,
+.ticket-form button {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #2a2e39;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.ticket-form button {
+  background: #f5c219;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  transition: background 0.2s;
+}
+
+.ticket-form button:hover {
+  background-color: #ffd700;
+}
+
+.timeline-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.timeline {
+  position: relative;
+  margin-left: 2rem;
+  border-left: 3px solid #f5c219;
+  padding-left: 2rem;
+  padding-bottom: 2rem;
+}
+
+.timeline-item {
+  margin-bottom: 2rem;
+  position: relative;
+  animation: fadeInUp 0.4s ease both;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -1.3rem;
+  top: 0.5rem;
+  height: 16px;
+  width: 16px;
+  background-color: #f5c219;
+  border-radius: 50%;
+  z-index: 1;
+  box-shadow: 0 0 5px #f5c219;
+}
+
+.timeline-content {
+  background: #1e1f2b;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.timeline-content h4 {
+  margin: 0 0 0.5rem;
+  color: #f5c219;
+}
+
+.timeline-content p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: black;
+}
+
+.status-badge.open {
+  background-color: #f5c219;
+}
+.status-badge.in_progress {
+  background-color: #ffb347;
+}
+.status-badge.resolved {
+  background-color: #90ee90;
+}
+
+.rating-box {
+  margin-top: 1rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,6 +1,9 @@
+// src/pages/DashboardAgent.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ChatBox from "../components/ChatBox";
+import Navbar from "../components/Navbar";
+import "./DashboardAgent.css";
 
 function DashboardAgent() {
   const [tickets, setTickets] = useState([]);
@@ -11,9 +14,7 @@ function DashboardAgent() {
   const fetchAssignedTickets = async () => {
     try {
       const res = await axios.get("http://localhost:5050/api/tickets/assigned", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setTickets(res.data);
     } catch (err) {
@@ -28,13 +29,9 @@ function DashboardAgent() {
       await axios.put(
         `http://localhost:5050/api/tickets/${ticketId}`,
         { [field]: value },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      fetchAssignedTickets(); // Refresh tickets after update
+      fetchAssignedTickets();
     } catch (err) {
       alert("Failed to update ticket");
     }
@@ -45,40 +42,64 @@ function DashboardAgent() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h2>Agent Dashboard</h2>
+    <div>
+      <Navbar />
+    <div className="agent-dashboard" style={{ maxHeight: "100vh", overflowY: "auto" }}>
+      <h2 className="dashboard-heading">Welcome, Agent 🧑‍💻</h2>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="loading-text">Loading...</p>
       ) : tickets.length === 0 ? (
-        <p>No tickets assigned to you.</p>
+        <p className="no-ticket-msg">No tickets assigned to you.</p>
       ) : (
-        <ul>
+        <div className="ticket-grid">
           {tickets.map((ticket) => (
-            <li key={ticket._id} style={{ marginBottom: "2rem", listStyle: "none" }}>
-              <div>
-                <strong>{ticket.subject}</strong> - {ticket.status} ({ticket.priority})
-                <br />
-                <small>{ticket.message}</small>
-                <br />
+            <div key={ticket._id} className="ticket-card">
+              <h3 className="ticket-subject">{ticket.subject}</h3>
 
-                {/* ✅ Show attachment link */}
-                {ticket.attachment && (
-                  <a
-                    href={`http://localhost:5050/uploads/${ticket.attachment}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    📎 View Attachment
-                  </a>
-                )}
+              <p className="ticket-message">{ticket.message}</p>
 
-                <br />
-                ✅ Customer Rating: {ticket.rating ? `${ticket.rating} ⭐` : "Not rated yet"}
+              <div className="ticket-meta">
+                <div className="meta-row">
+                  <label>Status:</label>
+                  <span className={`status-badge ${ticket.status.replace("_", "-")}`}>
+                    {ticket.status}
+                  </span>
+                </div>
 
-                {/* ✅ Status & Priority Controls */}
-                <div style={{ marginTop: "0.5rem" }}>
-                  <label>Status: </label>
+                <div className="meta-row">
+                  <label>Priority:</label>
+                  <span className={`priority-badge ${ticket.priority}`}>
+                    {ticket.priority}
+                  </span>
+                </div>
+              </div>
+
+              {ticket.attachment && (
+                <a
+                  href={`http://localhost:5050/uploads/${ticket.attachment}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="attachment-link"
+                >
+                  📎 View Attachment
+                </a>
+              )}
+
+              <div className="divider" />
+
+              <div className="rating-info">
+                Customer Rating:{" "}
+                <strong>
+                  {ticket.rating ? `${ticket.rating} ⭐` : "Not rated yet"}
+                </strong>
+              </div>
+
+              <div className="divider" />
+
+              <div className="controls">
+                <div className="meta-row">
+                  <label>Status:</label>
                   <select
                     value={ticket.status}
                     onChange={(e) => handleUpdate(ticket._id, "status", e.target.value)}
@@ -88,8 +109,10 @@ function DashboardAgent() {
                     <option value="resolved">Resolved</option>
                     <option value="closed">Closed</option>
                   </select>
+                </div>
 
-                  <label style={{ marginLeft: "1rem" }}>Priority: </label>
+                <div className="meta-row">
+                  <label>Priority:</label>
                   <select
                     value={ticket.priority}
                     onChange={(e) => handleUpdate(ticket._id, "priority", e.target.value)}
@@ -99,14 +122,16 @@ function DashboardAgent() {
                     <option value="high">High</option>
                   </select>
                 </div>
-
-                {/* ✅ Real-time Chat */}
-                <ChatBox ticketId={ticket._id} />
               </div>
-            </li>
+
+              <div className="divider" />
+
+              <ChatBox ticketId={ticket._id} />
+            </div>
           ))}
-        </ul>
+        </div>
       )}
+    </div>
     </div>
   );
 }

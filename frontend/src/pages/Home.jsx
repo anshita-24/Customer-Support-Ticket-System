@@ -5,19 +5,10 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import Navbar from "../components/Navbar";
 import "./Home.css";
 
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import { useCallback } from "react";
-
 function Home() {
-  const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
-  }, []);
-
   return (
     <>
       <Navbar />
-      
       <motion.div
         className="home-hero-wrapper"
         initial={{ opacity: 0 }}
@@ -38,7 +29,7 @@ function Home() {
             <Player
               autoplay
               loop
-              src="/support-hero.json" // Make sure this exists in `public/`
+              src="/support-hero.json" // ✅ Make sure this exists in `public/`
               style={{ height: "400px", width: "400px" }}
             />
           </div>
