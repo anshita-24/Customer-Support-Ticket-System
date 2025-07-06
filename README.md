@@ -1,4 +1,4 @@
-# 🛠️ Customer Support System (MERN + Socket.IO + Nodemailer + Multer)
+# 🛠️ HelpDesk (MERN + Socket.IO + Nodemailer + Multer)
 
 
 A full-stack **Customer Support Ticketing System** built using the **MERN Stack** with **real-time chat**, **file uploads**, **role-based dashboards**, and **basic analytics** — simulating a real-world helpdesk experience.
