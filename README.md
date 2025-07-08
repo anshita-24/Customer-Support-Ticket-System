@@ -35,7 +35,7 @@ A full-stack **Customer Support Ticketing System** built using the **MERN Stack*
 |-------------|--------------------------|
 | **Frontend**  | React.js, CSS (custom, responsive) |
 | **Backend**   | Node.js, Express.js     |
-| **Database**  | MongoDB + Mongoose      |
+| **Database**  | MongoDB Atlas     |
 | **Real-time** | Socket.IO               |
 | **File Upload** | Multer               |
 | **Email Service** | Nodemailer (for ticket notifications) |
